@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accuracy Dropoff Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .chart-container {
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <button id="modalBtn">Open Chart Modal</button>
+
+    <div id="chartModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="chart-container">
+                <canvas id="accuracyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('chartModal');
+        const btn = document.getElementById('modalBtn');
+        const span = document.getElementsByClassName('close')[0];
+
+        btn.onclick = function() {
+            modal.style.display = 'block';
+        }
+
+        span.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        const ctx = document.getElementById('accuracyChart').getContext('2d');
+        const accuracyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['0', '30', '60', '90', '120'],
+                datasets: [{
+                    label: 'Fingerprint',
+                    data: [100, 99.6, 99.2, 98.8, 98.4],
+                    borderColor: '#4CAF50',
+                    fill: false
+                }, {
+                    label: 'Competitors',
+                    data: [100, 70.7, 41.4, 12.1, -17.2],
+                    borderColor: '#F44336',
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+</body>
+</html>
